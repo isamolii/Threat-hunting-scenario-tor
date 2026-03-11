@@ -32,15 +32,15 @@ Searched for any file that had the string "tor" in it and discovered what looks 
 **Query used to locate events:**
 
 ```kql
-DeviceFileEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where InitiatingProcessAccountName == "employee"  
-| where FileName contains "tor"  
-| where Timestamp >= datetime(2024-11-08T22:14:48.6065231Z)  
-| order by Timestamp desc  
-| project Timestamp, DeviceName, ActionType, FileName, FolderPath, SHA256, Account = InitiatingProcessAccountName
+DeviceFileEvents
+| where DeviceName == "th-vm-isaias"
+| where FileName contains "tor"
+| where Timestamp >= datetime(2026-03-10 23:30:53.303)
+| order by Timestamp desc
+| project Timestamp, DeviceName, ActionType, FileName, SHA256, InitiatingProcessAccountName
+
 ```
-<img width="1212" alt="image" src="https://github.com/user-attachments/assets/71402e84-8767-44f8-908c-1805be31122d">
+<img width="1055" height="665" alt="image" src="https://github.com/user-attachments/assets/d3d193fa-e39a-4879-ab58-ef1555b17b71" />
 
 ---
 
@@ -52,12 +52,12 @@ Searched for any `ProcessCommandLine` that contained the string "tor-browser-win
 
 ```kql
 
-DeviceProcessEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-14.0.1.exe"  
-| project Timestamp, DeviceName, AccountName, ActionType, FileName, FolderPath, SHA256, ProcessCommandLine
+DeviceProcessEvents
+| where DeviceName == "th-vm-isaias"
+| where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-15.0.7.exe"
+| project Timestamp, DeviceName, ActionType, FileName, SHA256, InitiatingProcessAccountName
 ```
-<img width="1212" alt="image" src="https://github.com/user-attachments/assets/b07ac4b4-9cb3-4834-8fac-9f5f29709d78">
+<img width="965" height="325" alt="image" src="https://github.com/user-attachments/assets/02ba6045-42d9-4102-9539-0554a8bf78fc" />
 
 ---
 
@@ -68,13 +68,13 @@ Searched for any indication that user "employee" actually opened the TOR browser
 **Query used to locate events:**
 
 ```kql
-DeviceProcessEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where FileName has_any ("tor.exe", "firefox.exe", "tor-browser.exe")  
-| project Timestamp, DeviceName, AccountName, ActionType, FileName, FolderPath, SHA256, ProcessCommandLine  
-| order by Timestamp desc
+DeviceProcessEvents
+| where DeviceName == "th-vm-isaias"
+| where FileName has_any ("tor.exe", "tor-browser.exe", "firefox.exe", "torbrowser.exe", "start-tor-browser.exe")
+| project Timestamp, DeviceName, ActionType, FileName, SHA256, InitiatingProcessAccountName
+|order by Timestamp desc
 ```
-<img width="1212" alt="image" src="https://github.com/user-attachments/assets/b13707ae-8c2d-4081-a381-2b521d3a0d8f">
+<img width="1015" height="438" alt="image" src="https://github.com/user-attachments/assets/ee17d9d8-1824-4a81-956f-24960ef38335" />
 
 ---
 
@@ -85,15 +85,14 @@ Searched for any indication the TOR browser was used to establish a connection u
 **Query used to locate events:**
 
 ```kql
-DeviceNetworkEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where InitiatingProcessAccountName != "system"  
-| where InitiatingProcessFileName in ("tor.exe", "firefox.exe")  
-| where RemotePort in ("9001", "9030", "9040", "9050", "9051", "9150", "80", "443")  
-| project Timestamp, DeviceName, InitiatingProcessAccountName, ActionType, RemoteIP, RemotePort, RemoteUrl, InitiatingProcessFileName, InitiatingProcessFolderPath  
-| order by Timestamp desc
+DeviceNetworkEvents
+| where DeviceName == "th-vm-isaias"
+|where InitiatingProcessAccountName != "labuser"
+| where RemotePort in (9001, 9030, 9050, 9051, 9150)
+|project Timestamp, DeviceName, ActionType, RemoteIP, RemotePort, RemoteUrl,InitiatingProcessFileName
 ```
-<img width="1212" alt="image" src="https://github.com/user-attachments/assets/87a02b5b-7d12-4f53-9255-f5e750d0e3cb">
+<img width="1059" height="387" alt="image" src="https://github.com/user-attachments/assets/99af46b1-9183-4c1c-81f4-343ce615f74b" />
+
 
 ---
 
