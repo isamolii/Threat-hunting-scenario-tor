@@ -23,10 +23,7 @@
     Put any usage instructions here.
     Example syntax:
     PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
-#>
 
-# YOUR CODE GOES HERE
-# Run this in an elevated PowerShell (right-click PowerShell -> Run as administrator)
 $regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application"
 $desiredValue = 65536  # Decimal; 65536 KB = 64 MB (or set to 32768 for exact minimum)
 
